@@ -23,27 +23,25 @@ void throw(char *msg){
   exit(1);
 }
 
-char *getHtml(char *filename){
-  FILE *fptr = fopen(filename, "r");
-  char *line = (char *) malloc(sizeof(char)*MAXLINE);
-  //char *contents = (char *) malloc(sizeof(char) * MAXLINE);
-  size_t len = MAXLINE;
-  ssize_t read;
-  //int allocatedCount = 1;
+char *getHtml(char *filename) {
+  FILE *fp = fopen(filename, "r");
+  char c;
+  char *contents = (char *) malloc(sizeof(char) * MAXLINE);
+  int allocateCount = 1;
 
-  if(fptr == NULL)
-    return NULL;
+  do {
+    c = fgetc(fp);
+    if (feof(fp))
+      break;
+    
+    if(strlen(contents) >= MAXLINE*allocateCount)
+      contents = (char *) realloc(contents, sizeof(char)*MAXLINE*(++allocateCount));
 
-  while ((read = getline(&line, &len, fptr)) != -1) {
-    // if(strlen(contents)+read > allocatedCount*MAXLINE)
-    //   contents = (char *)realloc(contents, sizeof(char)*(++allocatedCount));
-    puts(line);
-    //strncat(contents, line, strlen(line));
-  }
+    strncat(contents, &c, 1);
 
-  //puts(contents);
-  fclose(fptr);
-  return NULL;
+  } while(1);
+
+  return contents;
 }
 
 int main(int argc, char **argv){
@@ -73,7 +71,7 @@ int main(int argc, char **argv){
 
     memset(recvline, 0, MAXLINE);
 
-    snprintf((char *)buff, sizeof buff, "HTTP/1.0 200 OK\r\n\r\n%s", "<p>asfsf</p>");
+    snprintf((char *)buff, sizeof buff, "HTTP/1.0 200 OK\r\n\r\n%s", getHtml("homepage.html"));
 
     write(connfd, (char *)buff, strlen((char *)buff));
     close(connfd);
