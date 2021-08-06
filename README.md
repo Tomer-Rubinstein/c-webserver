@@ -17,4 +17,4 @@ pages:
 ### TODO List
 - [x] basic routing system
 - [x] add support for a custom 404 page
-- [ ] nested routes
+- [x] nested routes

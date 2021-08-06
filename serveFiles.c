@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#define ROUTENAME_SIZE 30
+#define ROUTENAME_SIZE 60
 #define MAXLINE 4096
 
 uint8_t buff[MAXLINE+1];
@@ -53,10 +53,15 @@ void pageNotFound(){
   the default route `/` is called `index.html` in the pages directory.
 */
 void servePage(char *requestedRoute){
-  char *indexPage = getHtml("./pages/index.html");
   char *requestedPage;
-  
-  if(strcmp(requestedRoute, "/") == 0){
+  char indexRoute[100+ROUTENAME_SIZE];
+  char *indexPage;
+
+
+  if(requestedRoute[strlen(requestedRoute)-1] == '/'){
+    sprintf(indexRoute, "./pages%sindex.html", requestedRoute);
+    indexPage = getHtml(indexRoute);
+
     // show index page
     if(indexPage == NULL)
       pageNotFound();
@@ -77,7 +82,6 @@ void servePage(char *requestedRoute){
         strncat(contentLocation, &ext[i-strlen(requestedRoute)], 1);
     }
 
-    puts(contentLocation);
     requestedPage = getHtml(contentLocation);
 
     if(requestedPage == NULL)

@@ -67,7 +67,6 @@ int main(int argc, char **argv){
           tempChar = (char)recvline[i];
           strncat(requestedRoute, &tempChar, 1);
         }
-        
       }
 
       if(recvline[n-1] == '\n' || isRoute){
@@ -79,7 +78,6 @@ int main(int argc, char **argv){
     }
 
     servePage(requestedRoute);
-
 
     write(connfd, (char *)buff, strlen((char *)buff));
     close(connfd);
