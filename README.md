@@ -4,6 +4,8 @@ A simple HTTP server that serves html files.
 This project is mainly focused on the routing system of a webserver,
 the routing is file-system based, all pages are stored in the `pages` directory.
 
+[watch the full demonstration on youtube](https://youtu.be/X0w1pAhidKo)
+
 Example:
 ```
 pages:
